@@ -1,0 +1,13 @@
+llm:
+  max_tokens: 2000
+  model_path: models/llama-2-7b-chat.Q4_K_M.gguf
+  temperature: 0.7
+repositories:
+- path: ../skoop
+  patterns:
+  - '*.py'
+  - '*.js'
+  - '*.ts'
+  - '*.md'
+  - '*.yaml'
+  - '*.json'
