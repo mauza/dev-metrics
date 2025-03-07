@@ -3,8 +3,9 @@ package internal
 import (
 	"context"
 	"fmt"
+	"time"
 
-	"github.com/teilomillet/gollm"
+	"github.com/mauza/gollm"
 )
 
 // LLMOperations handles interactions with the LLM model
@@ -13,14 +14,16 @@ type LLMOperations struct {
 }
 
 // NewLLMOperations creates a new LLM operations instance
-func NewLLMOperations(modelPath string, temperature float64, maxTokens int) (*LLMOperations, error) {
+func NewLLMOperations(provider string, endpoint string, apiKey string, model string, temperature float64, maxTokens int) (*LLMOperations, error) {
 	llm, err := gollm.NewLLM(
-		gollm.SetProvider("openai"), // or other providers like "anthropic", "groq"
-		gollm.SetModel("gpt-4"),     // or other models
-		gollm.SetAPIKey(modelPath),  // we'll reuse modelPath as API key
+		gollm.SetProvider(provider),
+		gollm.SetModel(model),
+		gollm.SetEndpoint(endpoint),
+		gollm.SetAPIKey(apiKey),
 		gollm.SetMaxTokens(maxTokens),
 		gollm.SetTemperature(temperature),
 		gollm.SetMaxRetries(3),
+		gollm.SetTimeout(300*time.Second),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize LLM model: %w", err)

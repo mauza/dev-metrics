@@ -8,17 +8,22 @@ import (
 )
 
 type Config struct {
-	LLM struct {
-		MaxTokens   int     `yaml:"max_tokens"`
-		ModelPath   string  `yaml:"model_path"`
-		Temperature float64 `yaml:"temperature"`
-	} `yaml:"llm"`
+	LLM          LLMConfig    `yaml:"llm"`
 	Repositories []Repository `yaml:"repositories"`
 }
 
 type Repository struct {
 	Path     string   `yaml:"path"`
 	Patterns []string `yaml:"patterns"`
+}
+
+type LLMConfig struct {
+	Provider     string  `yaml:"provider"`
+	Endpoint     string  `yaml:"endpoint"`
+	Model        string  `yaml:"model"`
+	MaxTokens    int     `yaml:"max_tokens"`
+	APIKeyEnvVar string  `yaml:"api_key_env_var"`
+	Temperature  float64 `yaml:"temperature"`
 }
 
 func LoadConfig(configPath string) (*Config, error) {
@@ -36,8 +41,8 @@ func LoadConfig(configPath string) (*Config, error) {
 	if len(config.Repositories) == 0 {
 		return nil, fmt.Errorf("no repositories configured in config.yaml")
 	}
-	if config.LLM.ModelPath == "" {
-		return nil, fmt.Errorf("no LLM configuration in config.yaml")
+	if config.LLM.APIKeyEnvVar == "" {
+		return nil, fmt.Errorf("no LLM api key configuration in config.yaml")
 	}
 
 	return &config, nil

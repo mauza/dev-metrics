@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -35,9 +36,18 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	// Get API key from environment variable
+	apiKey := os.Getenv(config.LLM.APIKeyEnvVar)
+	if apiKey == "" {
+		return fmt.Errorf("API key environment variable %s is not set", config.LLM.APIKeyEnvVar)
+	}
+
 	// Initialize components
 	llm, err := internal.NewLLMOperations(
-		config.LLM.ModelPath,
+		config.LLM.Provider,
+		config.LLM.Endpoint,
+		apiKey,
+		config.LLM.Model,
 		config.LLM.Temperature,
 		config.LLM.MaxTokens,
 	)

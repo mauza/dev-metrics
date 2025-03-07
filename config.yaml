@@ -1,6 +1,9 @@
 llm:
+  provider: "openai"
+  endpoint: "https://ollama.mau.guru/api/chat/completions"
+  model: "qwq:latest"
   max_tokens: 2000
-  model_path: models/llama-2-7b-chat.Q4_K_M.gguf
+  api_key_env_var: "OPENAI_API_KEY"
   temperature: 0.7
 repositories:
 - path: ../skoop

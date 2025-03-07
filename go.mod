@@ -6,8 +6,8 @@ toolchain go1.23.5
 
 require (
 	github.com/go-git/go-git/v5 v5.11.0
+	github.com/mauza/gollm v0.1.6
 	github.com/spf13/cobra v1.8.0
-	github.com/teilomillet/gollm v0.1.4
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225
 	gopkg.in/yaml.v3 v3.0.1
 )

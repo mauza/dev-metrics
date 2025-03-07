@@ -171,8 +171,18 @@ func (g *CommitPatternGenerator) generateDayCommits(
 		commitType := g.selectCommitType(codingStyle)
 		commitInfo := g.commitTypes[commitType]
 
-		numFiles := rand.Intn(commitInfo.FileCountRange[1]-commitInfo.FileCountRange[0]+1) + commitInfo.FileCountRange[0]
-		changeType := commitInfo.Changes[rand.Intn(len(commitInfo.Changes))]
+		// Add safety check for file count range
+		fileCountDiff := commitInfo.FileCountRange[1] - commitInfo.FileCountRange[0] + 1
+		if fileCountDiff <= 0 {
+			fileCountDiff = 1
+		}
+		numFiles := rand.Intn(fileCountDiff) + commitInfo.FileCountRange[0]
+
+		// Add safety check for empty Changes slice
+		changeType := "unknown"
+		if len(commitInfo.Changes) > 0 {
+			changeType = commitInfo.Changes[rand.Intn(len(commitInfo.Changes))]
+		}
 
 		patterns = append(patterns, CommitPattern{
 			Timestamp:   commitTime,
@@ -297,6 +307,11 @@ func (g *CommitPatternGenerator) generateCommitDescription(
 	feature := "feature"
 	if len(parts) > 1 {
 		feature = parts[1]
+	}
+
+	// Add safety check for empty CommonPatterns
+	if len(persona.CommonPatterns) == 0 {
+		return "Update " + component
 	}
 
 	pattern := persona.CommonPatterns[rand.Intn(len(persona.CommonPatterns))]

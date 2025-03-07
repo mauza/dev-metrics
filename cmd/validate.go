@@ -33,13 +33,5 @@ func runValidate(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// Check LLM configuration
-	modelPath := filepath.Clean(config.LLM.ModelPath)
-	if _, err := os.Stat(modelPath); err != nil {
-		fmt.Printf("Warning: LLM model not found at %s\n", modelPath)
-	} else {
-		fmt.Printf("✓ LLM model found: %s\n", modelPath)
-	}
-
 	return nil
 }

@@ -98,22 +98,6 @@ func runSetup(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to download model: %w", err)
 	}
 
-	// Update config.yaml with the model path
-	configPath := "config.yaml"
-	if _, err := os.Stat(configPath); err == nil {
-		config, err := LoadConfig(configPath)
-		if err != nil {
-			return fmt.Errorf("failed to load config: %w", err)
-		}
-
-		config.LLM.ModelPath = modelPath
-		if err := SaveConfig(config, configPath); err != nil {
-			return fmt.Errorf("failed to save config: %w", err)
-		}
-
-		fmt.Printf("\nUpdated config.yaml with model path: %s\n", modelPath)
-	}
-
 	fmt.Println("\nSetup complete! You can now use dev-metrics with the downloaded model.")
 	return nil
 }
